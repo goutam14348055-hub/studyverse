@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyVerse</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#0b0b14;
+  color:white;
+}
+header{
+  padding:22px;
+  text-align:center;
+  background:#151526;
+  border-bottom:1px solid #33334a;
+}
+header h1{margin:0;color:#bd83ff}
+header p{color:#aaa}
+main{max-width:700px;margin:auto;padding:18px}
+.card{
+  background:#171727;
+  border:1px solid #33334a;
+  border-radius:16px;
+  padding:20px;
+  margin:16px 0;
+}
+h2{margin-top:0}
+button{
+  background:#8b5cf6;
+  color:white;
+  border:0;
+  border-radius:10px;
+  padding:12px 16px;
+  font-size:15px;
+  cursor:pointer;
+}
+input{
+  width:100%;
+  padding:13px;
+  margin:8px 0;
+  border-radius:9px;
+  border:1px solid #44445a;
+  background:#10101b;
+  color:white;
+}
+.small{color:#aaa;font-size:13px}
+footer{text-align:center;color:#999;padding:25px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>✨ StudyVerse</h1>
+  <p>Study together. Grow together.</p>
+</header>
+
+<main>
+  <div class="card">
+    <h2>👋 Welcome to StudyVerse!</h2>
+    <p>Your space to study, chat and connect.</p>
+    <p class="small">Your learning journey starts here.</p>
+  </div>
+
+  <div class="card">
+    <h2>📚 Study Rooms</h2>
+    <p>Create a study room name and invite your friends.</p>
+    <input id="roomName" placeholder="Enter study room name">
+    <button onclick="createRoom()">Create Room</button>
+    <div id="rooms"></div>
+  </div>
+
+  <div class="card">
+    <h2>💬 Group Chat</h2>
+    <p>Chat interface coming in the next stage.</p>
+    <p class="small">We'll connect real-time messaging after setup.</p>
+  </div>
+
+  <div class="card">
+    <h2>❤️ Private Chat</h2>
+    <p>A separate private messaging feature is planned.</p>
+    <p class="small">Login and access controls must be added before private messages can be used.</p>
+  </div>
+
+  <div class="card">
+    <h2>🎥 Video Calls</h2>
+    <p>Study face-to-face with your friends.</p>
+    <p class="small">We'll integrate video calling in a later stage.</p>
+  </div>
+</main>
+
+<footer>
+  Made with ❤️ for StudyVerse
+</footer>
+
+<script>
+function createRoom(){
+  const input=document.getElementById('roomName');
+  const name=input.value.trim();
+  if(!name){
+    alert('Please enter a room name!');
+    return;
+  }
+  const room=document.createElement('div');
+  room.className='card';
+  room.textContent='📚 '+name;
+  document.getElementById('rooms').appendChild(room);
+  input.value='';
+}
+</script>
+
+</body>
+      </html>
