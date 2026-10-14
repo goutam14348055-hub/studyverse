@@ -111,6 +111,172 @@ function createRoom(){
   input.value='';
 }
 </script>
+  <!-- StudyVerse Login System -->
+<style>
+#authBox {
+  max-width: 420px;
+  margin: 25px auto;
+  padding: 22px;
+  background: #151526;
+  border: 1px solid #7546c8;
+  border-radius: 16px;
+  text-align: center;
+}
+#authBox input, #authBox button {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+#authBox input {
+  background: #0b0b14;
+  color: white;
+  border: 1px solid #555;
+}
+#authBox button {
+  background: #7546c8;
+  color: white;
+  border: none;
+  font-weight: bold;
+}
+#authMessage {
+  overflow-wrap: anywhere;
+}
+</style>
+
+<section id="authBox">
+  <h2>🔐 StudyVerse Account</h2>
+  <p>Create an account or log in to continue.</p>
+
+  <input id="authName" type="text"
+    placeholder="Your name (for signup)">
+
+  <input id="authEmail" type="email"
+    placeholder="Email address">
+
+  <input id="authPassword" type="password"
+    placeholder="Password (at least 6 characters)">
+
+  <button id="signupBtn">Create Account</button>
+  <button id="loginBtn">Login</button>
+  <button id="logoutBtn" hidden>Logout</button>
+
+  <p id="authMessage" role="status"></p>
+  <p id="accountStatus">Not logged in</p>
+</section>
+
+<script type="module">
+import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  updateProfile
+} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+// Replace the placeholder values with your Firebase config.
+const firebaseConfig = {
+  apiKey: "PASTE_YOUR_API_KEY",
+  authDomain: "studyverse-c6f4b.firebaseapp.com",
+  projectId: "studyverse-c6f4b",
+  appId: "PASTE_YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const nameInput = document.getElementById("authName");
+const emailInput = document.getElementById("authEmail");
+const passwordInput = document.getElementById("authPassword");
+const message = document.getElementById("authMessage");
+const status = document.getElementById("accountStatus");
+const signupBtn = document.getElementById("signupBtn");
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+
+signupBtn.addEventListener("click", async () => {
+  const name = nameInput.value.trim();
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
+
+  if (!name || !email || !password) {
+    message.textContent = "Please fill in all three fields.";
+    return;
+  }
+
+  try {
+    message.textContent = "Creating your account...";
+
+    const result = await createUserWithEmailAndPassword(
+      auth, email, password
+    );
+
+    await updateProfile(result.user, {
+      displayName: name
+    });
+
+    message.textContent = "Account created successfully!";
+  } catch (error) {
+    message.textContent = error.message;
+  }
+});
+
+loginBtn.addEventListener("click", async () => {
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
+
+  if (!email || !password) {
+    message.textContent = "Enter your email and password.";
+    return;
+  }
+
+  try {
+    message.textContent = "Logging in...";
+
+    await signInWithEmailAndPassword(
+      auth, email, password
+    );
+
+    message.textContent = "Welcome back to StudyVerse!";
+  } catch (error) {
+    message.textContent = error.message;
+  }
+});
+
+logoutBtn.addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+    message.textContent = "You have logged out.";
+  } catch (error) {
+    message.textContent = error.message;
+  }
+});
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    status.textContent =
+      "Logged in as " + (user.displayName || user.email);
+
+    signupBtn.hidden = true;
+    loginBtn.hidden = true;
+    nameInput.hidden = true;
+    logoutBtn.hidden = false;
+  } else {
+    status.textContent = "Not logged in";
+
+    signupBtn.hidden = false;
+    loginBtn.hidden = false;
+    nameInput.hidden = false;
+    logoutBtn.hidden = true;
+  }
+});
+    </script>
 
 </body>
       </html>
